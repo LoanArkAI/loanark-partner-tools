@@ -1,0 +1,12 @@
+{
+  "name": "loanark-partners",
+  "owner": {
+    "name": "Loan Ark Inc.",
+    "url": "https://github.com/LoanArkAI"
+  },
+  "metadata": {
+    "description": "Claude skills from Loan Ark Inc. for our real estate agent partners.",
+    "version": "0.1.0"
+  },
+  "plugins": []
+}
