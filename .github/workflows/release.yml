@@ -1,0 +1,133 @@
+# Loan Ark partner marketplace — public repo (loanark-partners)
+#
+# This repository receives copies only. Every change arrives as a PR opened by promote.mjs
+# from the private LoanArkAI/claude-plugins repo. Nothing is authored here.
+#
+# On every pull request:  refuse anything promote.mjs did not open · promotion gates on every
+#                         plugin · marketplace.json must match plugin.json · claude plugin validate
+# On every push to main:  tag <plugin>--v<version> for every version that is new
+#
+# Branch protection on main (set once in GitHub → Settings → Branches) is what makes
+# "no direct commits" real: require a PR, require this check, no force pushes, include admins.
+
+name: release
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    name: Promotion gates · validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Claude Code CLI (for `claude plugin validate`)
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Only promote.mjs may change plugin content here
+        if: github.event_name == 'pull_request'
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          BODY: ${{ github.event.pull_request.body }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Pipeline maintenance (workflow, scripts, README) may be a hand-made PR.
+          # Anything touching a plugin directory or the catalog must come from promote.mjs.
+          content=$(git diff --name-only "$BASE_SHA" HEAD | grep -vE '^(\.github/|scripts/|README\.md$|\.gitignore$|LICENSE$)' || true)
+          if [ -z "$content" ]; then
+            echo "::notice title=Pipeline-only PR::No plugin or catalog files changed; promotion marker not required."
+            exit 0
+          fi
+          ok=1
+          case "$HEAD_REF" in promote/*) ;; *) ok=0 ;; esac
+          grep -q '<!-- promoted-by: promote.mjs -->' <<<"$BODY" || ok=0
+          if [ "$ok" = 0 ]; then
+            echo "::error title=Not a promotion::This repo only accepts plugin changes from PRs opened by promote.mjs in LoanArkAI/claude-plugins (branch promote/*, marker in the body). Author the change in the private repo and run: npm run promote -- --target loanark-partner-tools"
+            echo "Files that need a promotion:"; echo "$content"
+            exit 1
+          fi
+          echo "PR was opened by promote.mjs"
+
+      - name: Promotion gates (strict) on every published plugin
+        run: node scripts/scan-plugins.mjs --promotion
+
+      - name: marketplace.json must match plugin.json
+        run: node scripts/sync-marketplace.mjs --check
+
+      - name: Validate every plugin and the marketplace
+        shell: bash
+        run: |
+          set -euo pipefail
+          status=0
+          for dir in */; do
+            dir="${dir%/}"
+            [ -f "$dir/.claude-plugin/plugin.json" ] || continue
+            if ! claude plugin validate --strict "./$dir"; then status=1; fi
+          done
+          # --strict rejects an empty catalog ("no plugins defined"); the repo is legitimately
+          # empty until the first promotion, so relax only in that case.
+          if [ "$(node -p "require('./.claude-plugin/marketplace.json').plugins.length")" = "0" ]; then
+            claude plugin validate . || status=1
+          else
+            claude plugin validate --strict . || status=1
+          fi
+          exit $status
+
+  release:
+    name: Tag releases
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tag new plugin versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --tags --quiet
+          created=0
+          for dir in */; do
+            dir="${dir%/}"
+            manifest="$dir/.claude-plugin/plugin.json"
+            [ -f "$manifest" ] || continue
+            name=$(node -p "require('./$manifest').name")
+            version=$(node -p "require('./$manifest').version")
+            tag="${name}--v${version}"
+            git rev-parse -q --verify "refs/tags/$tag" >/dev/null && continue
+            git tag -a "$tag" -m "$name $version"
+            echo "tagged $tag"
+            created=$((created+1))
+          done
+          [ "$created" -gt 0 ] && git push origin --tags || echo "no new versions to tag"
+
+      - name: Summary
+        shell: bash
+        run: |
+          {
+            echo "## loanark-partners catalog"
+            echo
+            node -e '
+              const m = require("./.claude-plugin/marketplace.json");
+              if (!m.plugins.length) console.log("_(empty)_");
+              for (const p of m.plugins) console.log(`- ${p.name} **${p.version}**`);'
+            echo
+            echo "Partners on Cowork pick this up from **Customize → Plugins** (Update on the marketplace if it does not arrive on its own). Send the release note."
+          } >> "$GITHUB_STEP_SUMMARY"
