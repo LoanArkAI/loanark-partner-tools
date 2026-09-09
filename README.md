@@ -32,7 +32,7 @@ We publish improvements to these skills over time. Claude checks this catalog fo
 
 ## Questions
 
-Talk to your Loan Ark contact.
+Talk to your Loan Ark contact, or email [support@loanark.com](mailto:support@loanark.com).
 
 ---
 
