@@ -8,5 +8,98 @@
     "description": "Claude skills from Loan Ark Inc. for our real estate agent partners.",
     "version": "0.1.0"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "loanark-buyer-explainers",
+      "source": "./loanark-buyer-explainers",
+      "version": "1.0.4",
+      "description": "Plain-English buyer and seller handouts an agent sends under their own name: first-time buyer process, pre-approval, VA, jumbo, ADU, 2-1 buydown, assumables, seller credits, in-contract steps, seller's guide, down payment help. Co-branded, no rates. Triggers on 'buyer guide', 'explainer', 'one-pager', 'handout', 'seller's guide'.",
+      "author": {
+        "name": "Loan Ark Inc.",
+        "url": "https://github.com/LoanArkAI"
+      },
+      "keywords": [
+        "loanark",
+        "realtor",
+        "partner",
+        "education",
+        "surface:both"
+      ],
+      "category": "workflow"
+    },
+    {
+      "name": "loanark-client-updates",
+      "source": "./loanark-client-updates",
+      "version": "1.0.4",
+      "description": "Turn a loan milestone or status into the message an agent sends their buyer or seller (text, email, weekly summary) with what happens next, the redacted note for the other side, and status-only requests to escrow, HOA or the borrower, never sharing what the agent should not. Triggers on 'tell my client we're clear to close', 'weekly update for my buyers', 'nudge escrow'.",
+      "author": {
+        "name": "Loan Ark Inc.",
+        "url": "https://github.com/LoanArkAI"
+      },
+      "keywords": [
+        "loanark",
+        "realtor",
+        "partner",
+        "status",
+        "surface:both"
+      ],
+      "category": "workflow"
+    },
+    {
+      "name": "loanark-listing-marketing",
+      "source": "./loanark-listing-marketing",
+      "version": "1.0.4",
+      "description": "Write a real estate agent's listing marketing from an address and a few facts: just-listed and just-sold posts, open-house flyer copy with no-rate financing bullets, the listing description, and per-platform captions, co-branded with their Loan Ark loan officer. Triggers on 'just-listed post for', 'open house flyer for', 'listing description for'.",
+      "author": {
+        "name": "Loan Ark Inc.",
+        "url": "https://github.com/LoanArkAI"
+      },
+      "keywords": [
+        "loanark",
+        "realtor",
+        "partner",
+        "listing",
+        "marketing",
+        "surface:both"
+      ],
+      "category": "workflow"
+    },
+    {
+      "name": "loanark-realtor-brand-kit",
+      "source": "./loanark-realtor-brand-kit",
+      "version": "1.0.4",
+      "description": "Build or update a real estate agent's brand profile (realtor-brand-profile.md) that every other Loan Ark realtor skill uses for voice, market, license identity, and their Loan Ark loan officer. Triggers on 'set up my brand kit', 'build my profile', 'make my content sound like me'.",
+      "author": {
+        "name": "Loan Ark Inc.",
+        "url": "https://github.com/LoanArkAI"
+      },
+      "keywords": [
+        "loanark",
+        "realtor",
+        "partner",
+        "brand",
+        "surface:both"
+      ],
+      "category": "workflow"
+    },
+    {
+      "name": "loanark-social-content",
+      "source": "./loanark-social-content",
+      "version": "1.0.4",
+      "description": "A week of ready-to-post social content in the agent's voice: carousels, myth-vs-fact, reel scripts, attributed rate-index alerts, program explainers, seasonal posts and consented closings, sized per platform, co-branded, no rates, no targeting. Triggers on 'content for this week', 'reel script', 'turn this call into content'.",
+      "author": {
+        "name": "Loan Ark Inc.",
+        "url": "https://github.com/LoanArkAI"
+      },
+      "keywords": [
+        "loanark",
+        "realtor",
+        "partner",
+        "social",
+        "content",
+        "surface:both"
+      ],
+      "category": "workflow"
+    }
+  ]
 }

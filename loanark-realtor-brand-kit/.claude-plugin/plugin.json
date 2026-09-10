@@ -1,0 +1,16 @@
+{
+  "name": "loanark-realtor-brand-kit",
+  "version": "1.0.4",
+  "description": "Build or update a real estate agent's brand profile (realtor-brand-profile.md) that every other Loan Ark realtor skill uses for voice, market, license identity, and their Loan Ark loan officer. Triggers on 'set up my brand kit', 'build my profile', 'make my content sound like me'.",
+  "author": {
+    "name": "Loan Ark Inc.",
+    "url": "https://github.com/LoanArkAI"
+  },
+  "keywords": [
+    "loanark",
+    "realtor",
+    "partner",
+    "brand",
+    "surface:both"
+  ]
+}

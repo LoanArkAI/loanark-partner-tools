@@ -1,0 +1,16 @@
+{
+  "name": "loanark-client-updates",
+  "version": "1.0.4",
+  "description": "Turn a loan milestone or status into the message an agent sends their buyer or seller (text, email, weekly summary) with what happens next, the redacted note for the other side, and status-only requests to escrow, HOA or the borrower, never sharing what the agent should not. Triggers on 'tell my client we're clear to close', 'weekly update for my buyers', 'nudge escrow'.",
+  "author": {
+    "name": "Loan Ark Inc.",
+    "url": "https://github.com/LoanArkAI"
+  },
+  "keywords": [
+    "loanark",
+    "realtor",
+    "partner",
+    "status",
+    "surface:both"
+  ]
+}
