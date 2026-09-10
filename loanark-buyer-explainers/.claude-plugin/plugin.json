@@ -1,0 +1,16 @@
+{
+  "name": "loanark-buyer-explainers",
+  "version": "1.0.4",
+  "description": "Plain-English buyer and seller handouts an agent sends under their own name: first-time buyer process, pre-approval, VA, jumbo, ADU, 2-1 buydown, assumables, seller credits, in-contract steps, seller's guide, down payment help. Co-branded, no rates. Triggers on 'buyer guide', 'explainer', 'one-pager', 'handout', 'seller's guide'.",
+  "author": {
+    "name": "Loan Ark Inc.",
+    "url": "https://github.com/LoanArkAI"
+  },
+  "keywords": [
+    "loanark",
+    "realtor",
+    "partner",
+    "education",
+    "surface:both"
+  ]
+}

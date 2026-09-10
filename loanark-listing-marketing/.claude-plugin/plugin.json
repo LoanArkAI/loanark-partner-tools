@@ -1,0 +1,17 @@
+{
+  "name": "loanark-listing-marketing",
+  "version": "1.0.4",
+  "description": "Write a real estate agent's listing marketing from an address and a few facts: just-listed and just-sold posts, open-house flyer copy with no-rate financing bullets, the listing description, and per-platform captions, co-branded with their Loan Ark loan officer. Triggers on 'just-listed post for', 'open house flyer for', 'listing description for'.",
+  "author": {
+    "name": "Loan Ark Inc.",
+    "url": "https://github.com/LoanArkAI"
+  },
+  "keywords": [
+    "loanark",
+    "realtor",
+    "partner",
+    "listing",
+    "marketing",
+    "surface:both"
+  ]
+}
