@@ -1,0 +1,226 @@
+{
+  "$comment": "Mirrored from LoanArkAI/claude-plugins by promote.mjs — edit it there, not here.",
+  "secrets": [
+    {
+      "id": "anthropic-key",
+      "pattern": "sk-ant-[A-Za-z0-9_-]{20,}",
+      "note": "Anthropic API key"
+    },
+    {
+      "id": "sk-prefix",
+      "pattern": "\\bsk-[A-Za-z0-9_-]{16,}",
+      "note": "OpenAI/Stripe-style secret key"
+    },
+    {
+      "id": "pit-prefix",
+      "pattern": "\\bpit-[A-Za-z0-9_-]{16,}",
+      "note": "Personal integration token"
+    },
+    {
+      "id": "bearer-token",
+      "pattern": "Bearer\\s+[A-Za-z0-9._~+/=-]{20,}",
+      "note": "Bearer header carrying a real token"
+    },
+    {
+      "id": "github-token",
+      "pattern": "\\b(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}",
+      "note": "GitHub token"
+    },
+    {
+      "id": "slack-token",
+      "pattern": "\\bxox[abprs]-[A-Za-z0-9-]{10,}",
+      "note": "Slack token"
+    },
+    {
+      "id": "aws-key",
+      "pattern": "\\bAKIA[0-9A-Z]{16}\\b",
+      "note": "AWS access key id"
+    },
+    {
+      "id": "private-key",
+      "pattern": "-----BEGIN (RSA|EC|OPENSSH|DSA|PGP) PRIVATE KEY",
+      "note": "Private key block"
+    },
+    {
+      "id": "jwt",
+      "pattern": "\\beyJ[A-Za-z0-9_-]{15,}\\.[A-Za-z0-9_-]{15,}\\.[A-Za-z0-9_-]{10,}",
+      "note": "JWT"
+    },
+    {
+      "id": "supabase-key",
+      "pattern": "\\bsbp_[A-Za-z0-9]{20,}",
+      "note": "Supabase personal access token"
+    },
+    {
+      "id": "resend-key",
+      "pattern": "\\bre_[A-Za-z0-9]{20,}",
+      "note": "Resend API key"
+    },
+    {
+      "id": "twilio-sid",
+      "pattern": "\\b(AC|SK)[0-9a-f]{32}\\b",
+      "note": "Twilio SID/key"
+    },
+    {
+      "id": "env-assignment",
+      "pattern": "\\b(ANTHROPIC_API_KEY|OPENAI_API_KEY|GITHUB_TOKEN|GH_TOKEN|SUPABASE_SERVICE_ROLE_KEY|PIPEDRIVE_API_TOKEN|RESEND_API_KEY|TWILIO_AUTH_TOKEN)\\s*[=:]\\s*['\"]?[A-Za-z0-9._-]{12,}",
+      "note": "Credential assigned inline"
+    },
+    {
+      "id": "key-header",
+      "pattern": "(x-api-key|api[_-]?key|apikey)\\s*[:=]\\s*['\"]?[A-Za-z0-9._-]{16,}",
+      "note": "API key header/assignment with a value",
+      "ignoreCase": true
+    }
+  ],
+  "absolutePaths": [
+    {
+      "id": "windows-user",
+      "pattern": "[A-Za-z]:\\\\Users\\\\",
+      "note": "Windows user path"
+    },
+    {
+      "id": "mac-user",
+      "pattern": "(^|[\\s\"'`(=:])/Users/[A-Za-z0-9._-]+",
+      "note": "macOS user path"
+    },
+    {
+      "id": "linux-home",
+      "pattern": "(^|[\\s\"'`(=:])/home/[A-Za-z0-9._-]+",
+      "note": "Linux home path"
+    },
+    {
+      "id": "root-home",
+      "pattern": "(^|[\\s\"'`(=:])/root/",
+      "note": "root home path"
+    },
+    {
+      "id": "session-mount",
+      "pattern": "/mnt/user-data/|/sessions/[A-Za-z0-9_-]+",
+      "note": "Cloud-session mount path"
+    },
+    {
+      "id": "mac-volume",
+      "pattern": "(^|[\\s\"'`(=:])/Volumes/",
+      "note": "macOS volume path"
+    }
+  ],
+  "internalHosts": [
+    {
+      "id": "supabase-host",
+      "pattern": "\\b[a-z]{20}\\.supabase\\.(co|in)\\b",
+      "note": "Supabase project host"
+    },
+    {
+      "id": "supabase-ref",
+      "pattern": "supabase[^\\n]{0,40}\\b[a-z]{20}\\b",
+      "note": "Supabase project ref",
+      "ignoreCase": true
+    },
+    {
+      "id": "ipv4",
+      "pattern": "\\b(?!(?:0|127|10|192\\.168|255)\\.)(?:25[0-5]|2[0-4]\\d|1?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1?\\d?\\d)){3}\\b",
+      "note": "Public IPv4 address (droplet?)"
+    },
+    {
+      "id": "droplet",
+      "pattern": "\\b(droplet|digitalocean|do-[a-z]+-\\d)\\b",
+      "note": "DigitalOcean reference",
+      "ignoreCase": true
+    },
+    {
+      "id": "nextcloud-internal",
+      "pattern": "\\bnextcloud\\.[a-z0-9.-]+\\.(ai|com|local)\\b",
+      "note": "Nextcloud host",
+      "ignoreCase": true
+    }
+  ],
+  "pii": [
+    {
+      "id": "email",
+      "pattern": "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b",
+      "note": "Email address",
+      "allow": [
+        "support@loanark.com",
+        "noreply@anthropic.com",
+        "example.com",
+        ".example",
+        "@loanark.com"
+      ]
+    },
+    {
+      "id": "phone",
+      "pattern": "(?<![\\d-])(?:\\(\\d{3}\\)\\s?|\\b\\d{3}[-. ])\\d{3}[-. ]\\d{4}\\b",
+      "note": "US phone number",
+      "allow": [
+        "000-000-0000",
+        "555-"
+      ]
+    },
+    {
+      "id": "dre-number",
+      "pattern": "\\bDRE\\s*#?\\s*0\\d{7}\\b",
+      "note": "CA DRE license number (01234567/01234568 are the documented placeholders)",
+      "allow": [
+        "02305762",
+        "01234567",
+        "01234568"
+      ]
+    },
+    {
+      "id": "nmls-number",
+      "pattern": "\\bNMLS\\s*#?\\s*\\d{5,8}\\b",
+      "note": "NMLS number",
+      "allow": [
+        "2693461",
+        "957754"
+      ]
+    }
+  ],
+  "codeOnlySignals": [
+    {
+      "id": "gh-cli",
+      "pattern": "(^|[\\s`(|;&])gh\\s+(auth|repo|pr|issue|api|run|workflow|release|secret)\\b",
+      "note": "Uses the gh CLI"
+    },
+    {
+      "id": "ssh",
+      "pattern": "(^|[\\s`(|;&])(ssh|scp|rsync)\\s+[A-Za-z0-9_.-]+@",
+      "note": "SSH/scp to a host"
+    },
+    {
+      "id": "pm2",
+      "pattern": "(^|[\\s`(|;&])pm2\\s+",
+      "note": "Uses pm2"
+    },
+    {
+      "id": "supabase-cli",
+      "pattern": "(^|[\\s`(|;&])supabase\\s+(db|functions|link|login|migration|start|status)\\b",
+      "note": "Uses the supabase CLI"
+    },
+    {
+      "id": "project-dir",
+      "pattern": "\\$\\{?CLAUDE_PROJECT_DIR\\}?",
+      "note": "Assumes a project checkout"
+    },
+    {
+      "id": "ssh-keys",
+      "pattern": "~/\\.ssh/|id_(rsa|ed25519)",
+      "note": "Uses the user's SSH keys"
+    },
+    {
+      "id": "launchd",
+      "pattern": "\\blaunchctl\\b|LaunchAgents",
+      "note": "Assumes the user's Mac"
+    }
+  ],
+  "codeOnlyDirs": [
+    "bin",
+    "monitors"
+  ],
+  "codeOnlyFiles": [
+    ".lsp.json"
+  ],
+  "maxFileBytes": 5000000,
+  "maxPluginBytes": 50000000
+}
