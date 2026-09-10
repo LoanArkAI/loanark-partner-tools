@@ -98,6 +98,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      # `git tag -a` needs a committer identity. Without this the step dies with
+      # `empty ident name` (exit 128). It passes today only because there are no
+      # plugins to tag yet — it would fail on the first promotion.
+      - name: Configure git identity
+        run: |
+          git config user.name "loanark-release-bot"
+          git config user.email "engineering@loanark.com"
+
       - name: Tag new plugin versions
         shell: bash
         run: |
