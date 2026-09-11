@@ -20,7 +20,7 @@
 
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   repoRoot, discoverPlugins, surfaceOf, SURFACES, walkFiles, isTextFile, fileSize, color, parseArgs, MANIFEST,
 } from "./lib/plugins.mjs";
@@ -146,7 +146,10 @@ function frontmatter(text) {
   const m = /^---\r?\n([\s\S]*?)\r?\n---/.exec(text);
   if (!m) return null;
   const out = {};
-  const lines = m[1].split("\n");
+  // Split on CRLF as well as LF. `.` and `$` in the key/value regex below don't
+  // match a trailing \r, so a Windows checkout would report every skill as
+  // "frontmatter is missing name".
+  const lines = m[1].split(/\r?\n/);
   for (let i = 0; i < lines.length; i++) {
     const kv = /^([A-Za-z_-]+):\s*(.*)$/.exec(lines[i]);
     if (!kv) continue;
@@ -182,7 +185,7 @@ export function formatReport(results, { promotion }) {
 }
 
 // ---- CLI ----
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const { flags } = parseArgs(process.argv.slice(2));
   const root = flags.root || repoRoot();
   const promotion = Boolean(flags.promotion);

@@ -9,6 +9,7 @@
 //   node scripts/sync-marketplace.mjs --check    # exit 1 if the file is out of date
 //   node scripts/sync-marketplace.mjs --root <dir> --name <marketplace-name>
 
+import { pathToFileURL } from "node:url";
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { repoRoot, discoverPlugins, readJson, MARKETPLACE, color, parseArgs } from "./lib/plugins.mjs";
@@ -66,7 +67,7 @@ export function serialize(obj) {
 }
 
 // ---- CLI ----
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const { flags } = parseArgs(process.argv.slice(2));
   const root = flags.root ? flags.root : repoRoot();
   const { out, path, removed } = buildMarketplace(root, { name: flags.name });
